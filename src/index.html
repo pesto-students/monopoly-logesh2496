@@ -8,9 +8,24 @@
     <title>Monopoly</title>
 </head>
 <body>
-    <script src="./app.js"></script>
-    <div>
-        Welcome to the Monopoly game, website is under constructoin!!!
+    <div class="monopoly-game-page" id="monopoly">
+    <div class="home-page" id="home_page">
+        <div class="select-no-players">
+            Select number of players: <select><option>2</option><option>3</option><option>4</option></select>
+        </div>
+        <div class="players-list">
+            <div id="player_one_settings">Player 1: <input type="text" value="one"> <select><option>Red</option><option>Blue</option><option>Green</option><option>Yellow</option></select> </div>
+            <div id="player_two_settings">Player 2: <input type="text" value="two"> <select><option>Red</option><option selected>Blue</option><option>Green</option><option>Yellow</option></select> </div>
+            <div id="player_three_settings">Player 3: <input type="text" value="three"> <select><option>Red</option><option>Blue</option><option selected>Green</option><option>Yellow</option></select> </div>
+            <div id="player_four_settings">Player 4: <input type="text" value="four"> <select><option>Red</option><option>Blue</option><option>Green</option><option selected>Yellow</option></select> </div>
+        </div>
+        <button id="start_game">Start Game</button>
     </div>
+    <div class="game_page" id="game_page" style="display: none;">
+        
+    </div>
+    <div class="modal" id="modal"></div>
+</div>
+    <script src="./app.js"></script>
 </body>
 </html>
