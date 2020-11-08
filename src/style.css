@@ -8,3 +8,53 @@ body {
   font-weight: 300;
   font-size: 18px;
 }
+.board {
+  width: calc(11 * 65px);
+  height: 400px;
+
+  font-size: 12px;
+  word-break: break-word;
+}
+.board > div {
+  display: flex;
+}
+.place,
+.non-property {
+  border: 1px solid black;
+}
+.main-row .place,
+.secondary-row .place,
+.main-row .non-property {
+  width: 65px;
+  height: 65px;
+  text-align: center;
+}
+
+.secondary-row {
+  justify-content: space-between;
+  /* min-width: 200px;
+  height: 100px; */
+}
+.p1 {
+  background: red;
+}
+.p2 {
+  background: black;
+}
+.p3 {
+  background: orange;
+}
+.p4 {
+  background: blue;
+}
+.non-property .position .p1,
+.non-property .position .p2,
+.non-property .position .p3,
+.non-property .position .p4 {
+  width: 8px;
+  height: 8px;
+  margin-right: 4px;
+}
+.non-property .position {
+  display: flex;
+}
