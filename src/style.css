@@ -21,6 +21,9 @@ body {
 .place,
 .non-property {
   border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .main-row .place,
 .secondary-row .place,
@@ -47,14 +50,32 @@ body {
 .p4 {
   background: blue;
 }
-.non-property .position .p1,
-.non-property .position .p2,
-.non-property .position .p3,
-.non-property .position .p4 {
+.position .p1,
+.position .p2,
+.position .p3,
+.position .p4 {
   width: 8px;
   height: 8px;
   margin-right: 4px;
+  visibility: hidden;
 }
-.non-property .position {
+.go .position .p1,
+.go .position .p2,
+.go .position .p3,
+.go .position .p4 {
+  visibility: visible;
+}
+.position {
   display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+.game-info {
+  position: absolute;
+  left: 20%;
+  top: 60%;
+}
+.game-info .dice-area {
+  display: flex;
+  height: 50px;
 }

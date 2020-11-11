@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,95 +8,416 @@
     <link rel="stylesheet" href="./style.css">
     <title>Monopoly</title>
 </head>
+
 <body>
     <div class="monopoly-game-page" id="monopoly">
-    <div class="home-page" id="home_page">
-        <div class="select-no-players">
-            Select number of players: <select><option>2</option><option>3</option><option>4</option></select>
+        <div class="home-page" id="home_page">
+            <div class="select-no-players">
+                Select number of players: <select>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                </select>
+            </div>
+            <div class="players-list">
+                <div id="player_one_settings">Player 1: <input type="text" value="one"> <select>
+                        <option>Red</option>
+                        <option>Blue</option>
+                        <option>Green</option>
+                        <option>Yellow</option>
+                    </select> </div>
+                <div id="player_two_settings">Player 2: <input type="text" value="two"> <select>
+                        <option>Red</option>
+                        <option selected>Blue</option>
+                        <option>Green</option>
+                        <option>Yellow</option>
+                    </select> </div>
+                <div id="player_three_settings">Player 3: <input type="text" value="three"> <select>
+                        <option>Red</option>
+                        <option>Blue</option>
+                        <option selected>Green</option>
+                        <option>Yellow</option>
+                    </select> </div>
+                <div id="player_four_settings">Player 4: <input type="text" value="four"> <select>
+                        <option>Red</option>
+                        <option>Blue</option>
+                        <option>Green</option>
+                        <option selected>Yellow</option>
+                    </select> </div>
+            </div>
+            <button id="start_game" onclick="startGame()">Start Game</button>
         </div>
-        <div class="players-list">
-            <div id="player_one_settings">Player 1: <input type="text" value="one"> <select><option>Red</option><option>Blue</option><option>Green</option><option>Yellow</option></select> </div>
-            <div id="player_two_settings">Player 2: <input type="text" value="two"> <select><option>Red</option><option selected>Blue</option><option>Green</option><option>Yellow</option></select> </div>
-            <div id="player_three_settings">Player 3: <input type="text" value="three"> <select><option>Red</option><option>Blue</option><option selected>Green</option><option>Yellow</option></select> </div>
-            <div id="player_four_settings">Player 4: <input type="text" value="four"> <select><option>Red</option><option>Blue</option><option>Green</option><option selected>Yellow</option></select> </div>
-        </div>
-        <button id="start_game">Start Game</button>
-    </div>
-    <div class="game_page" id="game_page" style="display: none;">
-        <div class="board">
-            <div class="main-row">
-                <div class="non-property">Free Parking</div>
-                <div class="place">Kentucky Avenue</div>
-                <div class="place">Chance</div>
-                <div class="place">Indiana Avenue</div>
-                <div class="place">Illinois Avenue</div>
-                <div class="place">B&O Railroad</div>
-                <div class="place">Atlantic Avenue</div>
-                <div class="place">Ventnor Avenue</div>
-                <div class="place">Water Works</div>
-                <div class="place">Marvin Gardens</div>
-                <div class="non-property">Go to Jail</div>
-            </div>
-            <div class="secondary-row">
-                <div class="place">New York Avenue</div>
-                <div class="place">Pacific Avenue</div>
-            </div>
-            <div class="secondary-row">
-                <div class="place">Tennessee Avenue</div>
-                <div class="place">North Carolina Avenue</div>
-            </div>
-            <div class="secondary-row">
-                <div class="place">Community Chest</div>
-                <div class="place">Community Chest</div>
-            </div>
-            <div class="secondary-row">
-                <div class="place">St. James Place</div>
-                <div class="place">Pennsylvania Avenue</div>
-            </div>
-            <div class="secondary-row">
-                <div class="place">Pennsylvania Railroad</div>
-                <div class="place">Short Line</div>
-            </div>
-            <div class="secondary-row">
-                <div class="place">Virginia Avenue</div>
-                <div class="place">Chance</div>
-            </div>
-            <div class="secondary-row">
-                <div class="place">States Avenue</div>
-                <div class="place">Park Place</div>
-            </div>
-            <div class="secondary-row">
-                <div class="place">Electric Company</div>
-                <div class="place">LUXURY TAX</div>
-            </div>
-            <div class="secondary-row">
-                <div class="place">St. Charles Place</div>
-                <div class="place">Boardwalk</div>
-            </div>
-            <div class="main-row">
-                <div class="non-property">Jail Just Visiting</div>
-                <div class="place">Connecticut Avenue</div>
-                <div class="place">Vermont Avenue</div>
-                <div class="place">Chance</div>
-                <div class="place">Oriental Avenue</div>
-                <div class="place">Reading Railroad</div>
-                <div class="place">City Tax</div>
-                <div class="place">Baltic Avenue</div>
-                <div class="place">Community Chest</div>
-                <div class="place">Mediterranean Avenue</div>
-                <div class="non-property">Go!!!
-                    <div class="position">
-                        <div class="p1"></div>
-                        <div class="p2"></div>
-                        <div class="p3"></div>
-                        <div class="p4"></div>
+        <div class="game_page" id="game_page" style="display: none;">
+            <div class="board">
+                <div class="main-row">
+                    <div class="non-property">Free Parking
+                        <div id="position_20" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Kentucky Avenue
+                        <div id="position_21" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Chance
+                        <div id="position_22" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Indiana Avenue
+                        <div id="position_23" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Illinois Avenue
+                        <div id="position_24" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">B&O Railroad
+                        <div id="position_25" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Atlantic Avenue
+                        <div id="position_26" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Ventnor Avenue
+                        <div id="position_27" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Water Works
+                        <div id="position_28" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Marvin Gardens
+                        <div id="position_29" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="non-property">Go to Jail
+                        <div id="position_30" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="secondary-row">
+                    <div class="place">New York Avenue
+                        <div id="position_19" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Pacific Avenue
+                        <div id="position_31" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="secondary-row">
+                    <div class="place">Tennessee Avenue
+                        <div id="position_18" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">North Carolina Avenue
+                        <div id="position_32" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="secondary-row">
+                    <div class="place">Community Chest
+                        <div id="position_17" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Community Chest
+                        <div id="position_33" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="secondary-row">
+                    <div class="place">St. James Place
+                        <div id="position_16" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Pennsylvania Avenue
+                        <div id="position_34" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="secondary-row">
+                    <div class="place">Pennsylvania Railroad
+                        <div id="position_15" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Short Line
+                        <div id="position_35" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="secondary-row">
+                    <div class="place">Virginia Avenue
+                        <div id="position_14" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Chance
+                        <div id="position_36" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="secondary-row">
+                    <div class="place">States Avenue
+                        <div id="position_13" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Park Place
+                        <div id="position_37" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="secondary-row">
+                    <div class="place">Electric Company
+                        <div id="position_12" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">LUXURY TAX
+                        <div id="position_38" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="secondary-row">
+                    <div class="place">St. Charles Place
+                        <div id="position_11" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Boardwalk
+                        <div id="position_39" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-row">
+                    <div class="non-property">Jail Just Visiting
+                        <div id="position_10" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Connecticut Avenue
+                        <div id="position_9" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Vermont Avenue
+                        <div id="position_8" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Chance
+                        <div id="position_7" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Oriental Avenue
+                        <div id="position_6" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Reading Railroad
+                        <div id="position_5" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">City Tax
+                        <div id="position_4" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Baltic Avenue
+                        <div id="position_3" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Community Chest
+                        <div id="position_2" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="place">Mediterranean Avenue
+                        <div id="position_1" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
+                    </div>
+                    <div class="non-property go">Go!!!
+                        <div id="position_0" class="position">
+                            <div id="p1" class="p1"></div>
+                            <div id="p2" class="p2"></div>
+                            <div id="p3" class="p3"></div>
+                            <div id="p4" class="p4"></div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="game-info">
+                <div class="dice-area">
+                    <div class="dice-one" id="dice_one">
+                        <img src="../assets/Die_1.png" alt="1" style="display: none;">
+                        <img src="../assets/Die_2.png" alt="2" style="display: none;">
+                        <img src="../assets/Die_3.png" alt="3" style="display: none;">
+                        <img src="../assets/Die_4.png" alt="4" style="display: none;">
+                        <img src="../assets/Die_5.png" alt="5" style="display: none;">
+                        <img src="../assets/Die_6.png" alt="6" style="display: none;">
+                    </div>
+                    <div class="dice-two" id="dice_two">
+                        <img src="../assets/Die_1.png" alt="1" style="display: none;">
+                        <img src="../assets/Die_2.png" alt="2" style="display: none;">
+                        <img src="../assets/Die_3.png" alt="3" style="display: none;">
+                        <img src="../assets/Die_4.png" alt="4" style="display: none;">
+                        <img src="../assets/Die_5.png" alt="5" style="display: none;">
+                        <img src="../assets/Die_6.png" alt="6" style="display: none;">
+                    </div>
+                </div>
+                <button id='roll_dice' onclick="rollDice()">Roll</button>
+                <button id='end_turn' onclick='endTurn()' disabled>End turn</button>
+            </div>
         </div>
+        <div class="modal" id="modal"></div>
     </div>
-    <div class="modal" id="modal"></div>
-</div>
     <script src="./app.js"></script>
 </body>
+
 </html>
