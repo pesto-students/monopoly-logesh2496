@@ -53,7 +53,6 @@ function rollDice() {
     const totalIncrement = diceOne + diceTwo;
     const player = monoPoly.playersInfo[monoPoly.playerTurn];
     player.setPosition(totalIncrement);
-    monoPoly.setNextPlayer();
     rollDiceBtn.setAttribute('disabled', true);
     endTurnBtn.removeAttribute('disabled');
     setTimeout(() => performPlayerAction(monoPoly, player), 0);
@@ -67,6 +66,7 @@ function endTurn() {
     });
     rollDiceBtn.removeAttribute('disabled');
     endTurnBtn.setAttribute('disabled', true);
+    getInstance().setNextPlayer();
 }
 function performPlayerAction(monoPoly, player) {
     const currentPosition = player.getPosition();
@@ -74,7 +74,13 @@ function performPlayerAction(monoPoly, player) {
     const isValidPlace = card.price !== '';
     const isAlreadyOwned = monoPoly.owned.some(obj => obj.position === currentPosition);
     if (isAlreadyOwned) {
-
+        const isOwnedByOpponent = monoPoly.owned.some(obj => obj.position === currentPosition && obj.player === monoPoly.playerTurn);
+        if (isOwnedByOpponent) {
+            alert(`Take good rest in your ${card.name}`);
+        } else {
+            const ownerIndex = monoPoly.owned.filter(obj => obj.position === currentPosition)[0].player;
+            monoPoly.transferRent(card, monoPoly.playerTurn, ownerIndex);
+        }
     } else {
         if (isValidPlace) {
             const isOk = confirm(`Would you like to buy ${card.name} for $${card.price}`);
@@ -90,6 +96,7 @@ function performPlayerAction(monoPoly, player) {
             //Jail
             //Just Visiting
             //Go to Jail
+            //City Tax
         }
     }
 
@@ -118,6 +125,18 @@ class GameSettings {
             this.playerTurn++;
         }
     }
+    transferRent(property, from, to) {
+        const payer = this.playersInfo[from];
+        const rentIndex = payer.rentpayHistory[property.name] || 1;
+        const rentAmount = property[`rent${rentIndex}`];
+        alert(`Rent for visiting the place ${property.name} amount: $${rentAmount} will be detucted`);
+        payer.addRentPayHistory(property.name);
+        if (property[`rent${rentIndex}`] <= payer.cash) {
+            payer.cash -= rentAmount;
+        } else {
+            alert('please sell a property to pay the debt!!!');
+        }
+    }
 }
 class Player {
     #_position = 0;
@@ -128,6 +147,7 @@ class Player {
         this.cash = cash;
         this.id = id;
         this.properties = [];
+        this.rentpayHistory = {};
     }
     getPosition() {
         return this.#_position;
@@ -154,9 +174,28 @@ class Player {
     buy(card) {
         this.cash -= card.price;
         this.properties.push(card);
+        const table = getById(`player_${this.id}_table`);
+        table.rows[0].cells[0].querySelector('#cash_on_hand').innerHTML = `$${this.cash}`;
+        if (this.properties.length === 1) {
+            table.rows[1].cells[0].innerHTML = card.name;
+        } else {
+            const tr = document.createElement('tr');
+            const td = document.createElement('td');
+            td.innerHTML = card.name;
+            tr.appendChild(td);
+            table.tBodies[0].appendChild(tr);
+        }
+        getById(`position_${this.#_position}`).parentElement.style.border = `3px solid ${this.color}`;
     }
     sell(card, soldPrice) {
         this.cash += soldPrice;
         this.properties = this.properties.filter(property => property.name !== card.name);
+    }
+    addRentPayHistory(name) {
+        if (this.rentpayHistory[name]) {
+            this.rentpayHistory = this.rentpayHistory === 5 ? 5 : this.rentpayHistory + 1;
+        } else {
+            this.rentpayHistory[name] = 2;
+        }
     }
 }

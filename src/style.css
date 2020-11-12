@@ -79,3 +79,43 @@ body {
   display: flex;
   height: 50px;
 }
+.info-area {
+  width: 45%;
+  float: right;
+  display: flex;
+  flex-direction: column;
+}
+.players-info-box {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+.p-one-info-box,
+.p-two-info-box,
+.p-three-info-box,
+.p-four-info-box {
+  width: 150px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+td {
+  font-size: 16px;
+}
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+#cash_on_hand {
+  font-size: 13px;
+}
