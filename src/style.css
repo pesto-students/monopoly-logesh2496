@@ -42,13 +42,13 @@ body {
   background: red;
 }
 .p2 {
-  background: black;
+  background: blue;
 }
 .p3 {
-  background: orange;
+  background: green;
 }
 .p4 {
-  background: blue;
+  background: orange;
 }
 .position .p1,
 .position .p2,
@@ -118,4 +118,16 @@ tr:nth-child(even) {
 }
 #cash_on_hand {
   font-size: 13px;
+}
+.p-one-info-box th {
+  color: red;
+}
+.p-two-info-box th {
+  color: blue;
+}
+.p-three-info-box th {
+  color: green;
+}
+.p-four-info-box th {
+  color: orange;
 }

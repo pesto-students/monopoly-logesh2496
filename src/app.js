@@ -55,7 +55,7 @@ function rollDice() {
     player.setPosition(totalIncrement);
     rollDiceBtn.setAttribute('disabled', true);
     endTurnBtn.removeAttribute('disabled');
-    setTimeout(() => performPlayerAction(monoPoly, player), 0);
+    setTimeout(() => performPlayerAction(monoPoly, player, totalIncrement), 0);
 }
 function endTurn() {
     Array.from(getById('dice_one').children).map(dice => {
@@ -68,7 +68,7 @@ function endTurn() {
     endTurnBtn.setAttribute('disabled', true);
     getInstance().setNextPlayer();
 }
-function performPlayerAction(monoPoly, player) {
+function performPlayerAction(monoPoly, player, lastDiceValues) {
     const currentPosition = player.getPosition();
     const card = gameBlocks[currentPosition];
     const isValidPlace = card.price !== '';
@@ -90,13 +90,28 @@ function performPlayerAction(monoPoly, player) {
             }
             endTurn();
         } else {
-            //chances
-            //community chest
-            //Go
-            //Jail
-            //Just Visiting
-            //Go to Jail
-            //City Tax
+            switch (card.name) {
+                case 'Community Chest':
+                    alert(communityCards[lastDiceValues - 1]);
+                    break;
+                case 'City Tax':
+                    player.cash -= 200;
+                    alert('Tax amount $200 has been deducted!');
+                    break;
+                case 'Chance':
+                    alert(chances[lastDiceValues - 1])
+                    break;
+                case 'Just Visiting':
+                    break;
+                case 'Jail':
+                    break;
+                case 'Free Parking':
+                    break;
+                case 'Go to Jail':
+                    break;
+                default:
+                    alert('Something went wrong, please report it to a dev!');
+            }
         }
     }
 
@@ -148,6 +163,7 @@ class Player {
         this.id = id;
         this.properties = [];
         this.rentpayHistory = {};
+        this.freeFromJailPass = 0;
     }
     getPosition() {
         return this.#_position;
