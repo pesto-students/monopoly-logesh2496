@@ -97,7 +97,6 @@ function performPlayerAction(monoPoly, player, lastDiceValues) {
                 monoPoly.owned.push({ position: currentPosition, player: monoPoly.playerTurn });
                 player.buy(card);
             }
-            // endTurn();
         } else {
             switch (card.name) {
                 case 'Community Chest':
@@ -127,7 +126,7 @@ function performPlayerAction(monoPoly, player, lastDiceValues) {
             }
         }
     }
-
+    monoPoly.playersInfo.map(player => player.updateCashCell());
 }
 function handleCommunityCards(diceValue, player){
     const ccStr = communityCards[diceValue];
@@ -231,6 +230,14 @@ function handleChances(diceValue, player){
             break;
     }
 }
+function onSellPropertySelected(e) {
+    const selectedProperty = getById('property_auction').value;
+    const monoPoly = getInstance();
+    const seller = monoPoly.playersInfo[monoPoly.playerTurn];
+    const card = seller.properties.filter(block => block.name === selectedProperty)[0];
+    seller.sell(card, card.price);
+    //TODO
+}
 //Classes
 class GameSettings {
     constructor(playersInfo, noOfPlayers) {
@@ -269,10 +276,22 @@ class GameSettings {
         if (property[`rent${rentIndex}`] <= payer.cash) {
             payer.cash -= rentAmount;
         } else {
+            if(!payer.properties.length){
+                alert('You do not have any property to pay the debt. Game ended!');
+                return;
+            }
+            const auctionArea = getById('auction_area');
+            auctionArea.style.display='unset';
+            const select = getById('property_auction');
+            let options = '';
+            payer.properties.map(property => {
+                const option = document.createElement('option');
+                option.innerHTML = property.name;
+                select.appendChild(option);
+            });
             alert('please sell a property to pay the debt!!!');
         }
-        const table = getById(`player_${payer.id}_table`);
-        table.rows[0].cells[0].querySelector('#cash_on_hand').innerHTML = `$${payer.cash}`;
+        payer.updateCashCell();
     }
 }
 class Player {
@@ -306,6 +325,7 @@ class Player {
         if(this.collectForGo && this.#_position > 0 && this.#_position <= 12){
             this.collectForGo = false;
             this.cash += 200;
+            this.updateCashCell();
             alert('$200 has been credited for crossing GO!');
         }
         if(this.#_position > 27 && this.#_position <= 39){
@@ -345,12 +365,17 @@ class Player {
     sell(card, soldPrice) {
         this.cash += soldPrice;
         this.properties = this.properties.filter(property => property.name !== card.name);
+        this.updateCashCell();
     }
     addRentPayHistory(name) {
         if (this.rentpayHistory[name]) {
-            this.rentpayHistory = this.rentpayHistory === 5 ? 5 : this.rentpayHistory + 1;
+            this.rentpayHistory[name] = this.rentpayHistory[name] === 5 ? 5 : this.rentpayHistory[name] + 1;
         } else {
             this.rentpayHistory[name] = 2;
         }
+    }
+    updateCashCell(){
+        const table = getById(`player_${this.id}_table`);
+        table.rows[0].cells[0].querySelector('#cash_on_hand').innerHTML = `$${this.cash}`;
     }
 }
