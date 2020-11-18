@@ -176,6 +176,7 @@ function handleCommunityCards(diceValue, player){
 function handleChances(diceValue, player){
     const ccStr = chances[diceValue];
     alert(ccStr);
+    const monoPoly = getInstance();
     switch(diceValue){
         case 1:
             //TODO
@@ -184,8 +185,13 @@ function handleChances(diceValue, player){
             player.cash -= 15;
             break;
         case 3:
-            //TODO
-            player.cash -= 50;
+            const noOfPlayers = monoPoly.noOfPlayers - 1;
+            for (let i = 0; i < noOfPlayers; i++) {
+                player.cash -= 50;
+                if (monoPoly.playersInfo[i].id !== player.id) {
+                    monoPoly.playersInfo[i].cash += 50;
+                }
+            }
             break;
         case 4:
             const currentPosition = player.getPosition();
@@ -193,7 +199,6 @@ function handleChances(diceValue, player){
             break;
         case 5:
             //TODO
-            player.cash += 50;
             break;
         case 6:
             player.cash += 50;
@@ -237,6 +242,25 @@ function onSellPropertySelected(e) {
     const card = seller.properties.filter(block => block.name === selectedProperty)[0];
     seller.sell(card, card.price);
     //TODO
+    hideAuctionArea();
+}
+function showAuctionArea(){
+    endTurnBtn.setAttribute('disabled', true);
+    const monoPoly = getInstance();
+    const payer = monoPoly.playersInfo[monoPoly.playerTurn];
+    const auctionArea = getById('auction_area');
+    auctionArea.style.display='unset';
+    const select = getById('property_auction');
+    payer.properties.map(property => {
+        const option = document.createElement('option');
+        option.innerHTML = property.name;
+        select.appendChild(option);
+    });
+}
+function hideAuctionArea(){
+    const auctionArea = getById('auction_area');
+    auctionArea.style.display='none';
+    endTurnBtn.removeAttribute('disabled');
 }
 //Classes
 class GameSettings {
@@ -280,15 +304,7 @@ class GameSettings {
                 alert('You do not have any property to pay the debt. Game ended!');
                 return;
             }
-            const auctionArea = getById('auction_area');
-            auctionArea.style.display='unset';
-            const select = getById('property_auction');
-            let options = '';
-            payer.properties.map(property => {
-                const option = document.createElement('option');
-                option.innerHTML = property.name;
-                select.appendChild(option);
-            });
+            showAuctionArea();
             alert('please sell a property to pay the debt!!!');
         }
         payer.updateCashCell();

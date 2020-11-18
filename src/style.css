@@ -6,7 +6,7 @@
 body {
   font-family: Roboto;
   font-weight: 300;
-  font-size: 18px;
+  font-size: 16px;
 }
 .board {
   width: calc(11 * 65px);
