@@ -13,32 +13,32 @@
     <div class="monopoly-game-page" id="monopoly">
         <div class="home-page" id="home_page">
             <div class="select-no-players">
-                Select number of players: <select>
+                Select number of players: <select id='no_of_players'>
                     <option>2</option>
                     <option>3</option>
                     <option>4</option>
                 </select>
             </div>
             <div class="players-list">
-                <div id="player_one_settings">Player 1: <input type="text" value="one"> <select>
+                <div id="player_one_settings">Player 1: <input type="text" value="one"> <select disabled>
                         <option>Red</option>
                         <option>Blue</option>
                         <option>Green</option>
                         <option>Orange</option>
                     </select> </div>
-                <div id="player_two_settings">Player 2: <input type="text" value="two"> <select>
+                <div id="player_two_settings">Player 2: <input type="text" value="two"> <select disabled>
                         <option>Red</option>
                         <option selected>Blue</option>
                         <option>Green</option>
                         <option>Orange</option>
                     </select> </div>
-                <div id="player_three_settings">Player 3: <input type="text" value="three"> <select>
+                <div id="player_three_settings">Player 3: <input type="text" value="three"> <select disabled>
                         <option>Red</option>
                         <option>Blue</option>
                         <option selected>Green</option>
                         <option>Orange</option>
                     </select> </div>
-                <div id="player_four_settings">Player 4: <input type="text" value="four"> <select>
+                <div id="player_four_settings">Player 4: <input type="text" value="four"> <select disabled>
                         <option>Red</option>
                         <option>Blue</option>
                         <option>Green</option>
@@ -53,7 +53,7 @@
                     <div class="p-one-info-box">
                         <table id="player_0_table">
                             <tr>
-                                <th>Player:1 - <span id="cash_on_hand">$1500</span></th>
+                                <th><span id="dyn_name_1"></span> - <span id="cash_on_hand">$1500</span></th>
                             </tr>
                             <tr>
                                 <td>Yet to buy</td>
@@ -63,7 +63,7 @@
                     <div class="p-two-info-box">
                         <table id="player_1_table">
                             <tr>
-                                <th>Player:2 - <span id="cash_on_hand">$1500</span></th>
+                                <th><span id="dyn_name_2"></span> - <span id="cash_on_hand">$1500</span></th>
                             </tr>
                             <tr>
                                 <td>Yet to buy</td>
@@ -73,7 +73,7 @@
                     <div class="p-three-info-box">
                         <table id="player_2_table">
                             <tr>
-                                <th>Player:3 - <span id="cash_on_hand">$1500</span></th>
+                                <th><span id="dyn_name_3">three</span> - <span id="cash_on_hand">$1500</span></th>
                             </tr>
                             <tr>
                                 <td>Yet to buy</td>
@@ -81,15 +81,22 @@
                         </table>
                     </div>
                     <div class="p-four-info-box">
-                        <table id="player_4_table">
+                        <table id="player_3_table">
                             <tr>
-                                <th>Player:4 - <span id="cash_on_hand">$1500</span></th>
+                                <th><span id="dyn_name_4">four</span> - <span id="cash_on_hand">$1500</span></th>
                             </tr>
                             <tr>
                                 <td>Yet to buy</td>
                             </tr>
                         </table>
                     </div>
+                </div>
+                <div class="auction-area" id="auction_area">
+                    <span id="auction_player"></span>
+                    <span class="">
+                        <select id="property_auction">properties</select>
+                    </span>
+                    <button onclick="onSellPropertySelected()">sell</button>
                 </div>
                 <!-- <div>
                     <table>
@@ -358,7 +365,10 @@
                     </div>
                 </div>
                 <div class="main-row">
-                    <div class="non-property">Jail Just Visiting
+                    <div class="non-property">Jail
+                        <br>
+                        <br>
+                        Just Visiting
                         <div id="position_10" class="position">
                             <div id="p1" class="p1"></div>
                             <div id="p2" class="p2"></div>
