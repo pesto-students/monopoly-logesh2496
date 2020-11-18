@@ -1,0 +1,133 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: Roboto;
+  font-weight: 300;
+  font-size: 18px;
+}
+.board {
+  width: calc(11 * 65px);
+  height: 400px;
+
+  font-size: 12px;
+  word-break: break-word;
+}
+.board > div {
+  display: flex;
+}
+.place,
+.non-property {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.main-row .place,
+.secondary-row .place,
+.main-row .non-property {
+  width: 65px;
+  height: 65px;
+  text-align: center;
+}
+
+.secondary-row {
+  justify-content: space-between;
+  /* min-width: 200px;
+  height: 100px; */
+}
+.p1 {
+  background: red;
+}
+.p2 {
+  background: blue;
+}
+.p3 {
+  background: green;
+}
+.p4 {
+  background: orange;
+}
+.position .p1,
+.position .p2,
+.position .p3,
+.position .p4 {
+  width: 8px;
+  height: 8px;
+  margin-right: 4px;
+  visibility: hidden;
+}
+.go .position .p1,
+.go .position .p2,
+.go .position .p3,
+.go .position .p4 {
+  visibility: visible;
+}
+.position {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+.game-info {
+  position: absolute;
+  left: 20%;
+  top: 60%;
+}
+.game-info .dice-area {
+  display: flex;
+  height: 50px;
+}
+.info-area {
+  width: 45%;
+  float: right;
+  display: flex;
+  flex-direction: column;
+}
+.players-info-box {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+.p-one-info-box,
+.p-two-info-box,
+.p-three-info-box,
+.p-four-info-box {
+  width: 150px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+td {
+  font-size: 16px;
+}
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+#cash_on_hand {
+  font-size: 13px;
+}
+.p-one-info-box th {
+  color: red;
+}
+.p-two-info-box th {
+  color: blue;
+}
+.p-three-info-box th {
+  color: green;
+}
+.p-four-info-box th {
+  color: orange;
+}
