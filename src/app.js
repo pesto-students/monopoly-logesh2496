@@ -1,13 +1,13 @@
 let gameBlocks;
-fetch('../data/gameBlocks.json').then(blocks => {
+fetch('./data/gameBlocks.json').then(blocks => {
     blocks.json().then(data => { gameBlocks = data });
 });
 let chances;
-fetch('../data/chanceCards.json').then(cards => {
+fetch('./data/chanceCards.json').then(cards => {
     cards.json().then(data => { chances = data });
 });
 let communityCards;
-fetch('../data/communityCards.json').then(cards => {
+fetch('./data/communityCards.json').then(cards => {
     cards.json().then(data => { communityCards = data });
 });
 //Selectors
