@@ -132,8 +132,16 @@ tr:nth-child(even) {
 .p-four-info-box th {
   color: orange;
 }
-.auction-area{
-  height: 200px;
-  border: 1px solid;
+.auction-area, .mortage-area{
+  height: 100px;
+    width: 400px;
+    border: 1px solid;
+    padding-left: 15px;
   display: none;
+}
+.auction-area *{
+  margin: 5px;
+}
+.player-turn {
+  margin: 10px 0;
 }

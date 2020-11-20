@@ -92,11 +92,24 @@
                     </div>
                 </div>
                 <div class="auction-area" id="auction_area">
-                    <span id="auction_player"></span>
+                    AUCTION:
                     <span class="">
                         <select id="property_auction">properties</select>
                     </span>
-                    <button onclick="onSellPropertySelected()">sell</button>
+                    <table id="players_auction">
+                        
+                    </table>
+                    Bidding Player:<strong id="auction_player"></strong>
+                    Bidding Amount:<strong id="auction_amt">--</strong>
+                    <button id="increment_amount" onclick="increamentAuctionAmt()">+</button>
+                    <button id="bid_off" onclick="bidOff()">Bid off</button>
+                </div>
+                <div class="mortage-area" id="mortage_area">
+                    Mortage:
+                    <span class="">
+                        <select id="property_mortage">properties</select>
+                    </span>
+                    <span id="mortage_amt"></span>
                 </div>
                 <!-- <div>
                     <table>
@@ -479,6 +492,7 @@
                 </div>
                 <button id='roll_dice' onclick="rollDice()">Roll</button>
                 <button id='end_turn' onclick='endTurn()' disabled>End turn</button>
+                <div class="player-turn">Currently Playing: <strong id="player_turn"></strong></div>
             </div>
         </div>
         <div class="modal" id="modal"></div>

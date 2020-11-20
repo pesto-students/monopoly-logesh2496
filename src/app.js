@@ -39,10 +39,11 @@ function startGame() {
     const playerFourSettings = getPlayersInfo(getById('player_four_settings'));
     const players = [playerOneSettings, playerTwoSettings, playerThreeSettings, playerFourSettings];
     const noOfPlayers = parseInt(getById('no_of_players').value);
-    for(let i=1;i<=noOfPlayers;i++){
+    for (let i = 1; i <= noOfPlayers; i++) {
         const id = `dyn_name_${i}`;
-        getById(id).innerHTML = players[i-1].name;
+        getById(id).innerHTML = players[i - 1].name;
     }
+    getById('player_turn').innerHTML = playerOneSettings.name;
     hideUnwantedElements(true);
     monopolyGame[instanceAttribute] = new GameSettings(players, noOfPlayers);
 }
@@ -96,6 +97,8 @@ function performPlayerAction(monoPoly, player, lastDiceValues) {
             if (isOk) {
                 monoPoly.owned.push({ position: currentPosition, player: monoPoly.playerTurn });
                 player.buy(card);
+            } else {
+                startAuction(card, player);
             }
         } else {
             switch (card.name) {
@@ -128,10 +131,10 @@ function performPlayerAction(monoPoly, player, lastDiceValues) {
     }
     monoPoly.playersInfo.map(player => player.updateCashCell());
 }
-function handleCommunityCards(diceValue, player){
+function handleCommunityCards(diceValue, player) {
     const ccStr = communityCards[diceValue];
     alert(ccStr);
-    switch(diceValue){
+    switch (diceValue) {
         case 1:
             player.cash += 10;
             break;
@@ -173,11 +176,11 @@ function handleCommunityCards(diceValue, player){
             break;
     }
 }
-function handleChances(diceValue, player){
+function handleChances(diceValue, player) {
     const ccStr = chances[diceValue];
     alert(ccStr);
     const monoPoly = getInstance();
-    switch(diceValue){
+    switch (diceValue) {
         case 1:
             //TODO
             break;
@@ -244,12 +247,12 @@ function onSellPropertySelected(e) {
     //TODO
     hideAuctionArea();
 }
-function showAuctionArea(){
+function showAuctionArea() {
     endTurnBtn.setAttribute('disabled', true);
     const monoPoly = getInstance();
     const payer = monoPoly.playersInfo[monoPoly.playerTurn];
     const auctionArea = getById('auction_area');
-    auctionArea.style.display='unset';
+    auctionArea.style.display = 'unset';
     const select = getById('property_auction');
     payer.properties.map(property => {
         const option = document.createElement('option');
@@ -257,10 +260,74 @@ function showAuctionArea(){
         select.appendChild(option);
     });
 }
-function hideAuctionArea(){
+function hideAuctionArea() {
     const auctionArea = getById('auction_area');
-    auctionArea.style.display='none';
+    auctionArea.style.display = 'none';
     endTurnBtn.removeAttribute('disabled');
+}
+
+function startAuction(card, player) {
+    const monoPoly = getInstance();
+    endTurnBtn.setAttribute('disabled', true);
+    const noOfPlayers = monoPoly.noOfPlayers;
+    monoPoly.auctionObj = {
+        name: player.name,
+        id: player.id,
+        position: player.getPosition(),
+        inContention: noOfPlayers,
+        card,
+        bidders: monoPoly.playersInfo,
+        winningBid: {
+            player: player,
+            amount: 10
+        }
+    };
+    getById('auction_area').style.display = 'unset';
+    const option = document.createElement('option');
+    option.innerHTML = card.name;
+    const amountElem = getById('auction_amt');
+    amountElem.innerHTML = 10;
+    getById('property_auction').appendChild(option);
+    const biddingPlayer = monoPoly.getNextPlayer();
+    monoPoly.auctionObj.currentBidder = biddingPlayer;
+    getById('auction_player').innerHTML = biddingPlayer.name;
+
+}
+function increamentAuctionAmt() {
+    const monoPoly = getInstance();
+    const amountElem = getById('auction_amt');
+    const currentBidAmount = parseInt(amountElem.innerHTML) + 10;
+    const currentBiddingPlayer = monoPoly.auctionObj.currentBidder;
+    if (currentBiddingPlayer.cash < currentBidAmount) {
+        alert('You dont have sufficient cash to continue in this bidding.');
+        bidOff();
+        return;
+    }
+    monoPoly.auctionObj.winningBid = { player: currentBiddingPlayer, amount: currentBidAmount };
+    amountElem.innerHTML = currentBidAmount;
+    setNextPlayerInPage(monoPoly);
+}
+function setNextPlayerInPage(monoPoly, isBidOff) {
+    const nextPlayer = monoPoly.getNextBiddingPlayer();
+    if (isBidOff) {
+        monoPoly.auctionObj.bidders = monoPoly.auctionObj.bidders.filter(player => player.id !== monoPoly.auctionObj.currentBidder.id);
+    }
+    monoPoly.auctionObj.currentBidder = nextPlayer;
+    getById('auction_player').innerHTML = nextPlayer.name;
+}
+function bidOff() {
+    const monoPoly = getInstance();
+    monoPoly.auctionObj.inContention -= 1;
+    if (monoPoly.auctionObj.inContention === 1) {
+        alert(`${monoPoly.auctionObj.winningBid.player.name} has won the bidding for $${monoPoly.auctionObj.winningBid.amount}. Congrats`);
+        const { position, winningBid, card } = monoPoly.auctionObj;
+        monoPoly.owned.push({ position, player: winningBid.player.id });
+        winningBid.player.buy(card, winningBid.amount, position);
+        hideAuctionArea();
+        endTurnBtn.removeAttribute('disabled');
+        return;
+    }
+    setNextPlayerInPage(monoPoly, true);
 }
 //Classes
 class GameSettings {
@@ -278,6 +345,7 @@ class GameSettings {
         this.noOfPlayers = noOfPlayers;
         this.playerTurn = 0;
         this.owned = [];
+        this.auctionObj = {};
     }
     setNextPlayer() {
         if (this.playerTurn === this.noOfPlayers - 1) {
@@ -285,22 +353,43 @@ class GameSettings {
         } else {
             this.playerTurn++;
         }
+        getById('player_turn').innerHTML = this.playersInfo[this.playerTurn].name;
+    }
+    getNextPlayer() {
+        let index;
+        if (this.playerTurn === this.noOfPlayers - 1) {
+            index = 0;
+        } else {
+            index = this.playerTurn + 1;
+        }
+        return this.auctionObj.bidders[index];
+    }
+    getNextBiddingPlayer() {
+        let index;
+        const { inContention, bidders, currentBidder } = this.auctionObj;
+        const currentBidderIndex = bidders.findIndex(bidder => bidder.id === currentBidder.id);
+        if (currentBidderIndex === (bidders.length - 1)) {
+            index = 0;
+        } else {
+            index = currentBidderIndex + 1;
+        }
+        return bidders[index];
     }
     transferRent(property, from, to) {
         const payer = this.playersInfo[from];
         const owener = this.playersInfo[to];
         const rentIndex = payer.rentpayHistory[property.name] || 1;
         let rentAmount = property[`rent${rentIndex}`];
-        if(property.groupNumber === 2){
+        if (property.groupNumber === 2) {
             const diceValue = getInstance().currentDice;
-            rentAmount = owener.properties.filter(property => property.groupNumber === 2).length === 2 ? diceValue * 10 : diceValue * 2; 
+            rentAmount = owener.properties.filter(property => property.groupNumber === 2).length === 2 ? diceValue * 10 : diceValue * 2;
         }
         alert(`Rent for visiting the place ${property.name} amount: $${rentAmount} will be detucted`);
         payer.addRentPayHistory(property.name);
         if (property[`rent${rentIndex}`] <= payer.cash) {
             payer.cash -= rentAmount;
         } else {
-            if(!payer.properties.length){
+            if (!payer.properties.length) {
                 alert('You do not have any property to pay the debt. Game ended!');
                 return;
             }
@@ -327,7 +416,7 @@ class Player {
         return this.#_position;
     }
     setPosition(diceValue, toValue) {
-        if(toValue){
+        if (toValue) {
             this.#_position = 0;
         } else {
             this.#_prevPosition = this.#_position;
@@ -338,13 +427,13 @@ class Player {
                 this.#_position = newPosition;
             }
         }
-        if(this.collectForGo && this.#_position > 0 && this.#_position <= 12){
+        if (this.collectForGo && this.#_position > 0 && this.#_position <= 12) {
             this.collectForGo = false;
             this.cash += 200;
             this.updateCashCell();
             alert('$200 has been credited for crossing GO!');
         }
-        if(this.#_position > 27 && this.#_position <= 39){
+        if (this.#_position > 27 && this.#_position <= 39) {
             this.collectForGo = true;
         }
         this.setElementToPosition();
@@ -358,12 +447,13 @@ class Player {
         const position = getById(pieceId + this.#_prevPosition);
         position.children[this.id].style.visibility = 'hidden';
     }
-    buy(card) {
-        if(this.cash < card.price){
+    buy(card, amount, position) {
+        const price = amount || card.price;
+        if (this.cash < price) {
             alert(`You don't have sufficient money to buy this property.`);
             return;
         }
-        this.cash -= card.price;
+        this.cash -= price;
         this.properties.push(card);
         const table = getById(`player_${this.id}_table`);
         table.rows[0].cells[0].querySelector('#cash_on_hand').innerHTML = `$${this.cash}`;
@@ -376,7 +466,8 @@ class Player {
             tr.appendChild(td);
             table.tBodies[0].appendChild(tr);
         }
-        getById(`position_${this.#_position}`).parentElement.style.border = `3px solid ${this.color}`;
+        getById(`position_${position || this.#_position}`).parentElement.style.border = `3px solid ${this.color}`;
+        this.updateCashCell();
     }
     sell(card, soldPrice) {
         this.cash += soldPrice;
@@ -390,7 +481,7 @@ class Player {
             this.rentpayHistory[name] = 2;
         }
     }
-    updateCashCell(){
+    updateCashCell() {
         const table = getById(`player_${this.id}_table`);
         table.rows[0].cells[0].querySelector('#cash_on_hand').innerHTML = `$${this.cash}`;
     }
