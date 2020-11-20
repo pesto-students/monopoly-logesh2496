@@ -8,6 +8,13 @@ body {
   font-weight: 300;
   font-size: 16px;
 }
+#player_three_settings,
+#player_four_settings {
+  display: none;
+}
+.home-page * {
+  margin: 5px;
+}
 .board {
   width: calc(11 * 65px);
   height: 400px;
@@ -132,17 +139,21 @@ tr:nth-child(even) {
 .p-four-info-box th {
   color: orange;
 }
-.auction-container, .banking-area{
+.auction-container,
+.banking-area {
   height: 100px;
-    width: 400px;
-    border: 1px solid;
-    padding-left: 15px;
-    margin-top: 10px;
+  width: 400px;
+  border: 1px solid;
+  padding-left: 15px;
+  margin-top: 10px;
 }
-.auction-area *, .banking-area *{
+.auction-area *,
+.banking-area * {
   margin: 5px;
 }
-.auction-area, .mortgage-area, .bank-area {
+.auction-area,
+.mortgage-area,
+.bank-area {
   display: none;
 }
 .player-turn {

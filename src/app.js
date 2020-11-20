@@ -10,6 +10,7 @@ let communityCards;
 fetch('./data/communityCards.json').then(cards => {
     cards.json().then(data => { communityCards = data });
 });
+
 //Selectors
 const getById = (id) => document.getElementById(id);
 const getPlayersInfo = (settingsElement) => {
@@ -29,6 +30,7 @@ const getInstance = () => {
 }
 const rollDiceBtn = getById('roll_dice');
 const endTurnBtn = getById('end_turn');
+
 //Event Listeners
 
 //Functions
@@ -38,6 +40,16 @@ function startGame() {
     const playerThreeSettings = getPlayersInfo(getById('player_three_settings'));
     const playerFourSettings = getPlayersInfo(getById('player_four_settings'));
     const players = [playerOneSettings, playerTwoSettings, playerThreeSettings, playerFourSettings];
+    let isValidationFailed = false;
+    players.forEach((player, i) => {
+        if (!player.name.length) {
+            alert(`Player ${i + 1} name must be provided!!!`);
+            isValidationFailed = true;
+        }
+    });
+    if (isValidationFailed) {
+        return;
+    }
     const noOfPlayers = parseInt(getById('no_of_players').value);
     for (let i = 1; i <= noOfPlayers; i++) {
         const id = `dyn_name_${i}`;
@@ -65,7 +77,6 @@ function rollDice() {
     player.setPosition(totalIncrement);
     rollDiceBtn.setAttribute('disabled', true);
     endTurnBtn.removeAttribute('disabled');
-    setTimeout(() => performPlayerAction(monoPoly, player, totalIncrement), 0);
 }
 function endTurn() {
     Array.from(getById('dice_one').children).map(dice => {
@@ -78,7 +89,24 @@ function endTurn() {
     endTurnBtn.setAttribute('disabled', true);
     getInstance().setNextPlayer();
 }
-function performPlayerAction(monoPoly, player, lastDiceValues) {
+function onSelectNoOfPlayers() {
+    const select = getById('no_of_players');
+    const noOfPlayers = parseInt(select.value);
+    if (noOfPlayers === 2) {
+        const elems = [getById('player_three_settings'), getById('player_four_settings')];
+        elems.map(elem => {
+            elem.style.display = 'none';
+        });
+    } else if (noOfPlayers === 3) {
+        getById('player_three_settings').style.display = 'block';
+        getById('player_four_settings').style.display = 'none';
+    } else {
+        getById('player_three_settings').style.display = 'block';
+        getById('player_four_settings').style.display = 'block';
+    }
+}
+function performPlayerAction(player, lastDiceValues) {
+    const monoPoly = getInstance();
     const currentPosition = player.getPosition();
     const card = gameBlocks[currentPosition];
     const isValidPlace = card.price !== '';
@@ -110,7 +138,7 @@ function performPlayerAction(monoPoly, player, lastDiceValues) {
                     alert('Tax amount $200 has been deducted!');
                     break;
                 case 'Chance':
-                    alert(chances[lastDiceValues - 1])
+                    handleChances(lastDiceValues - 1, player);
                     break;
                 case 'Just Visiting':
                     break;
@@ -119,6 +147,8 @@ function performPlayerAction(monoPoly, player, lastDiceValues) {
                 case 'Free Parking':
                     break;
                 case 'Go to Jail':
+                    alert('Go directly to Jail. Do not pass GO. Do not collect $200.');
+                    player.setPosition(false, 10);
                     break;
                 case 'LUXURY TAX':
                     player.cash -= 200;
@@ -170,6 +200,7 @@ function handleCommunityCards(diceValue, player) {
             break;
         case 14:
             //TODO
+            alert('Do not have support for hotels/houses');
             break;
         case 15:
             player.setPosition(false, 10);
@@ -183,6 +214,7 @@ function handleChances(diceValue, player) {
     switch (diceValue) {
         case 1:
             //TODO
+            alert('Do not have support for hotels/houses');
             break;
         case 2:
             player.cash -= 15;
@@ -201,13 +233,23 @@ function handleChances(diceValue, player) {
             player.setPosition(false, currentPosition - 3);
             break;
         case 5:
-            //TODO
+            if (player.getPosition() > 12 && player.getPosition() < 28) {
+                player.setPosition(false, 28);
+            } else {
+                player.setPosition(false, 12);
+            }
             break;
         case 6:
             player.cash += 50;
             break;
         case 7:
-            //TODO
+            if (player.getPosition() > 15 && player.getPosition() < 25) {
+                player.setPosition(false, 25);
+            } else if (player.getPosition() > 5) {
+                player.setPosition(false, 15);
+            } else {
+                player.setPosition(false, 5);
+            }
             break;
         case 8:
             player.cash -= 15;
@@ -221,32 +263,36 @@ function handleChances(diceValue, player) {
             break;
         case 11:
             player.setPosition(false, 24);
-            //TODO
             break;
         case 12:
             player.cash += 150;
             break;
         case 13:
-            //TODO
+            if (player.getPosition() > 15 && player.getPosition() < 25) {
+                player.setPosition(false, 25);
+            } else if (player.getPosition() > 5) {
+                player.setPosition(false, 15);
+            } else {
+                player.setPosition(false, 5);
+            }
             break;
         case 14:
             player.setPosition(false, 11);
-            //TODO
             break;
         case 15:
             player.setPosition(false, 10);
             break;
     }
 }
-function onSellPropertySelected(e) {
-    const selectedProperty = getById('property_auction').value;
-    const monoPoly = getInstance();
-    const seller = monoPoly.playersInfo[monoPoly.playerTurn];
-    const card = seller.properties.filter(block => block.name === selectedProperty)[0];
-    seller.sell(card, card.price);
-    //TODO
-    hideAuctionArea();
-}
+// function onSellPropertySelected(e) {
+//     const selectedProperty = getById('property_auction').value;
+//     const monoPoly = getInstance();
+//     const seller = monoPoly.playersInfo[monoPoly.playerTurn];
+//     const card = seller.properties.filter(block => block.name === selectedProperty)[0];
+//     seller.sell(card, card.price);
+//     //TODO
+//     hideAuctionArea();
+// }
 function showAuctionArea() {
     endTurnBtn.setAttribute('disabled', true);
     const monoPoly = getInstance();
@@ -425,15 +471,15 @@ class GameSettings {
     transferRent(property, from, to) {
         const payer = this.playersInfo[from];
         const owener = this.playersInfo[to];
-        const rentIndex = payer.rentpayHistory[property.name] || 1;
-        let rentAmount = property[`rent${rentIndex}`];
+        const rentIndex = payer.rentpayHistory[property.name];
+        let rentAmount = rentIndex ? property[`rent${rentIndex}`] : property[`baserent`];
         if (property.groupNumber === 2) {
             const diceValue = getInstance().currentDice;
             rentAmount = owener.properties.filter(property => property.groupNumber === 2).length === 2 ? diceValue * 10 : diceValue * 2;
         }
         alert(`Rent for visiting the place ${property.name} amount: $${rentAmount} will be detucted`);
         payer.addRentPayHistory(property.name);
-        if (property[`rent${rentIndex}`] <= payer.cash) {
+        if (rentAmount <= payer.cash) {
             payer.cash -= rentAmount;
         } else {
             if (!payer.properties.length) {
@@ -498,10 +544,10 @@ class Player {
         return this.#_position;
     }
     setPosition(diceValue, toValue) {
+        this.#_prevPosition = this.#_position;
         if (toValue) {
-            this.#_position = 0;
+            this.#_position = toValue;
         } else {
-            this.#_prevPosition = this.#_position;
             const newPosition = this.#_position + diceValue;
             if (newPosition > 39) {
                 this.#_position = newPosition - 39;
@@ -509,7 +555,12 @@ class Player {
                 this.#_position = newPosition;
             }
         }
-        if (this.collectForGo && this.#_position > 0 && this.#_position <= 12) {
+        const isGoingToJail = toValue && toValue === 10;
+        if (isGoingToJail) {
+            alert('Collecting $50 fine for jail!');
+            this.cash -= 50;
+        }
+        if (this.collectForGo && this.#_position > 0 && this.#_position <= 12 && !isGoingToJail) {
             this.collectForGo = false;
             this.cash += 200;
             this.updateCashCell();
@@ -519,6 +570,7 @@ class Player {
             this.collectForGo = true;
         }
         this.setElementToPosition();
+        setTimeout(() => performPlayerAction(this, diceValue), 0);
     }
     setElementToPosition() {
         const position = getById(pieceId + this.#_position);
@@ -560,7 +612,7 @@ class Player {
         if (this.rentpayHistory[name]) {
             this.rentpayHistory[name] = this.rentpayHistory[name] === 5 ? 5 : this.rentpayHistory[name] + 1;
         } else {
-            this.rentpayHistory[name] = 2;
+            this.rentpayHistory[name] = 1;
         }
     }
     updateCashCell() {

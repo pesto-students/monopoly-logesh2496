@@ -13,7 +13,7 @@
     <div class="monopoly-game-page" id="monopoly">
         <div class="home-page" id="home_page">
             <div class="select-no-players">
-                Select number of players: <select id='no_of_players'>
+                Select number of players: <select id='no_of_players' onchange="onSelectNoOfPlayers()">
                     <option>2</option>
                     <option>3</option>
                     <option>4</option>
@@ -98,7 +98,7 @@
                             <select id="property_auction"></select>
                         </span>
                         <table id="players_auction">
-    
+
                         </table>
                         Bidding Player:<strong id="auction_player"></strong>
                         Bidding Amount:<strong id="auction_amt">--</strong>
