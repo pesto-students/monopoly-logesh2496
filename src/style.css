@@ -132,15 +132,18 @@ tr:nth-child(even) {
 .p-four-info-box th {
   color: orange;
 }
-.auction-area, .mortage-area{
+.auction-container, .banking-area{
   height: 100px;
     width: 400px;
     border: 1px solid;
     padding-left: 15px;
-  display: none;
+    margin-top: 10px;
 }
-.auction-area *{
+.auction-area *, .banking-area *{
   margin: 5px;
+}
+.auction-area, .mortgage-area, .bank-area {
+  display: none;
 }
 .player-turn {
   margin: 10px 0;

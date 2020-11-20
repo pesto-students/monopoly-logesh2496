@@ -56,7 +56,7 @@
                                 <th><span id="dyn_name_1"></span> - <span id="cash_on_hand">$1500</span></th>
                             </tr>
                             <tr>
-                                <td>Yet to buy</td>
+                                <td>--</td>
                             </tr>
                         </table>
                     </div>
@@ -66,7 +66,7 @@
                                 <th><span id="dyn_name_2"></span> - <span id="cash_on_hand">$1500</span></th>
                             </tr>
                             <tr>
-                                <td>Yet to buy</td>
+                                <td>--</td>
                             </tr>
                         </table>
                     </div>
@@ -76,7 +76,7 @@
                                 <th><span id="dyn_name_3">three</span> - <span id="cash_on_hand">$1500</span></th>
                             </tr>
                             <tr>
-                                <td>Yet to buy</td>
+                                <td>--</td>
                             </tr>
                         </table>
                     </div>
@@ -86,30 +86,43 @@
                                 <th><span id="dyn_name_4">four</span> - <span id="cash_on_hand">$1500</span></th>
                             </tr>
                             <tr>
-                                <td>Yet to buy</td>
+                                <td>--</td>
                             </tr>
                         </table>
                     </div>
                 </div>
-                <div class="auction-area" id="auction_area">
+                <div class="auction-container">
                     AUCTION:
-                    <span class="">
-                        <select id="property_auction">properties</select>
+                    <span class="auction-area" id="auction_area">
+                        <span class="">
+                            <select id="property_auction"></select>
+                        </span>
+                        <table id="players_auction">
+    
+                        </table>
+                        Bidding Player:<strong id="auction_player"></strong>
+                        Bidding Amount:<strong id="auction_amt">--</strong>
+                        <button id="increment_amount" onclick="increamentAuctionAmt()">+</button>
+                        <button id="bid_off" onclick="bidOff()">Bid off</button>
                     </span>
-                    <table id="players_auction">
-                        
-                    </table>
-                    Bidding Player:<strong id="auction_player"></strong>
-                    Bidding Amount:<strong id="auction_amt">--</strong>
-                    <button id="increment_amount" onclick="increamentAuctionAmt()">+</button>
-                    <button id="bid_off" onclick="bidOff()">Bid off</button>
                 </div>
-                <div class="mortage-area" id="mortage_area">
-                    Mortage:
-                    <span class="">
-                        <select id="property_mortage">properties</select>
-                    </span>
-                    <span id="mortage_amt"></span>
+                <div class="banking-area">
+                    Mortgage:
+                    <div class="mortgage-area" id="mortgage_area">
+                        <span class="">
+                            <select id="property_mortgage" onchange="onMortgageSelect()"></select>
+                        </span>
+                        <strong id="mortgage_amt"></strong>
+                        <button onclick="onGetMortgageValue()">Get</button>
+                    </div>
+                    <div class="bank-area" id="bank_area">
+                        Get back:
+                        <span class="">
+                            <select id="bank_props" onchange="onBankPropertySelect()"></select>
+                        </span>
+                        <strong id="bank_amt"></strong>
+                        <button onclick="payMortgageAndGetProperty()">Pay</button>
+                    </div>
                 </div>
                 <!-- <div>
                     <table>
@@ -123,7 +136,7 @@
                     </table>
                 </div> -->
             </div>
-            
+
             <div class="board">
                 <div class="main-row">
                     <div class="non-property">Free Parking

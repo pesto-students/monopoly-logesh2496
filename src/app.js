@@ -329,6 +329,51 @@ function bidOff() {
     }
     setNextPlayerInPage(monoPoly, true);
 }
+function getMortgageSelectedCard() {
+    const select = getById('property_mortgage');
+    const cardName = select.value;
+    return gameBlocks.filter(block => block.name === cardName)[0];
+}
+function onMortgageSelect() {
+    const card = getMortgageSelectedCard();
+    getById('mortgage_amt').innerHTML = '$' + card.price / 2;
+}
+function onGetMortgageValue() {
+    const monoPoly = getInstance();
+    const player = monoPoly.playersInfo[monoPoly.playerTurn];
+    const card = getMortgageSelectedCard();
+    mortgagePrice = card.price / 2;
+    alert(`Mortgage: ${card.name} property for ${mortgagePrice}!`);
+    monoPoly.mortgages.push({ name: card.name, mortgagePrice, id: player.id, payable: (mortgagePrice + ((mortgagePrice * 10) / 100)) });
+    player.properties = player.properties.filter(property => property.name !== card.name);
+    player.cash += mortgagePrice;
+    player.updateCashCell();
+    monoPoly.updateMortgage();
+}
+function payMortgageAndGetProperty() {
+    const monoPoly = getInstance();
+    const player = monoPoly.playersInfo[monoPoly.playerTurn];
+    const select = getById('bank_props');
+    const cardName = select.value;
+    const { name, payable } = monoPoly.mortgages.filter(block => block.name === cardName)[0];
+    if (player.cash < payable) {
+        alert('You dont have sufficient money to get back this property!');
+        return;
+    }
+    alert(`Getting back: ${name} property for ${payable}!`);
+    monoPoly.mortgages = monoPoly.mortgages.filter(mortgage => mortgage.name !== name);
+    player.properties.push(gameBlocks.filter(block => block.name === name)[0]);
+    player.cash -= payable;
+    player.updateCashCell();
+    monoPoly.updateMortgage();
+}
+function onBankPropertySelect() {
+    const monoPoly = getInstance();
+    const select = getById('bank_props');
+    const cardName = select.value;
+    const { payable } = monoPoly.mortgages.filter(block => block.name === cardName)[0];
+    getById('bank_amt').innerHTML = '$' + payable;
+}
 //Classes
 class GameSettings {
     constructor(playersInfo, noOfPlayers) {
@@ -346,6 +391,7 @@ class GameSettings {
         this.playerTurn = 0;
         this.owned = [];
         this.auctionObj = {};
+        this.mortgages = [];
     }
     setNextPlayer() {
         if (this.playerTurn === this.noOfPlayers - 1) {
@@ -354,6 +400,7 @@ class GameSettings {
             this.playerTurn++;
         }
         getById('player_turn').innerHTML = this.playersInfo[this.playerTurn].name;
+        this.updateMortgage();
     }
     getNextPlayer() {
         let index;
@@ -397,6 +444,41 @@ class GameSettings {
             alert('please sell a property to pay the debt!!!');
         }
         payer.updateCashCell();
+    }
+    updateMortgage() {
+        const { properties, id } = this.playersInfo[this.playerTurn];
+        if (properties.length) {
+            const mortgageEle = getById('mortgage_area');
+            mortgageEle.style.display = 'inline-block';
+            const select = getById('property_mortgage');
+            select.innerHTML = '';
+            properties.map(property => {
+                const option = document.createElement('option');
+                option.innerHTML = property.name;
+                select.appendChild(option);
+            });
+            const cardName = select.value;
+            const card = gameBlocks.filter(block => block.name === cardName)[0];
+            getById('mortgage_amt').innerHTML = '$' + card.price / 2;
+        } else {
+            const mortgageEle = getById('mortgage_area');
+            mortgageEle.style.display = 'none';
+        }
+        if (this.mortgages.filter(mortgage => mortgage.id === id).length) {
+            const mortgageArea = getById('bank_area');
+            mortgageArea.style.display = 'inline-block';
+            const select = getById('bank_props');
+            select.innerHTML = '';
+            this.mortgages.map(property => {
+                const option = document.createElement('option');
+                option.innerHTML = property.name;
+                select.appendChild(option);
+            });
+            getById('bank_amt').innerHTML = '$' + this.mortgages[0].payable;
+        } else {
+            const mortgageArea = getById('bank_area');
+            mortgageArea.style.display = 'none';
+        }
     }
 }
 class Player {
