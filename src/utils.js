@@ -1,0 +1,1 @@
+export const getRandomDiceValue = () => Math.floor(Math.floor(Math.random() * 6) + 1);

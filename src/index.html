@@ -13,7 +13,7 @@
     <div class="monopoly-game-page" id="monopoly">
         <div class="home-page" id="home_page">
             <div class="select-no-players">
-                Select number of players: <select id='no_of_players' onchange="onSelectNoOfPlayers()">
+                Select number of players: <select id='no_of_players' >
                     <option>2</option>
                     <option>3</option>
                     <option>4</option>
@@ -45,7 +45,7 @@
                         <option selected>Orange</option>
                     </select> </div>
             </div>
-            <button id="start_game" onclick="startGame()">Start Game</button>
+            <button id="start_game">Start Game</button>
         </div>
         <div class="game_page" id="game_page" style="display: none;">
             <div class="info-area">
@@ -102,26 +102,26 @@
                         </table>
                         Bidding Player:<strong id="auction_player"></strong>
                         Bidding Amount:<strong id="auction_amt">--</strong>
-                        <button id="increment_amount" onclick="increamentAuctionAmt()">+</button>
-                        <button id="bid_off" onclick="bidOff()">Bid off</button>
+                        <button id="increment_amount">+</button>
+                        <button id="bid_off">Bid off</button>
                     </span>
                 </div>
                 <div class="banking-area">
                     Mortgage:
                     <div class="mortgage-area" id="mortgage_area">
                         <span class="">
-                            <select id="property_mortgage" onchange="onMortgageSelect()"></select>
+                            <select id="property_mortgage"></select>
                         </span>
                         <strong id="mortgage_amt"></strong>
-                        <button onclick="onGetMortgageValue()">Get</button>
+                        <button id="get_mortgage">Get</button>
                     </div>
                     <div class="bank-area" id="bank_area">
                         Get back:
                         <span class="">
-                            <select id="bank_props" onchange="onBankPropertySelect()"></select>
+                            <select id="bank_props" ></select>
                         </span>
                         <strong id="bank_amt"></strong>
-                        <button onclick="payMortgageAndGetProperty()">Pay</button>
+                        <button id="pay_mortgage">Pay</button>
                     </div>
                 </div>
                 <!-- <div>
@@ -503,14 +503,14 @@
                         <img src="./assets/Die_6.png" alt="6" style="display: none;">
                     </div>
                 </div>
-                <button id='roll_dice' onclick="rollDice()">Roll</button>
-                <button id='end_turn' onclick='endTurn()' disabled>End turn</button>
+                <button id='roll_dice'>Roll</button>
+                <button id='end_turn' disabled>End turn</button>
                 <div class="player-turn">Currently Playing: <strong id="player_turn"></strong></div>
             </div>
         </div>
         <div class="modal" id="modal"></div>
     </div>
-    <script src="./app.js"></script>
+    <script type="module" src="./app.js"></script>
 </body>
 
 </html>
