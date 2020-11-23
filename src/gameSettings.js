@@ -66,10 +66,10 @@ export default class GameSettings {
         this.enableEndTurnBtn();
     }
     endTurn() {
-        Array.from(document.getElementById('dice_one').children).map(dice => {
+        Array.from(document.getElementById(diceOneId).children).map(dice => {
             dice.style.display = 'none';
         });
-        Array.from(document.getElementById('dice_two').children).map(dice => {
+        Array.from(document.getElementById(diceTwoId).children).map(dice => {
             dice.style.display = 'none';
         });
         this.enableRollDiceBtn();
@@ -148,7 +148,7 @@ export default class GameSettings {
         payer.updateCashCell();
     }
     updateMortgage() {
-        const { properties, id } = this.playersInfo[this.playerTurn];
+        const { properties, id } = this.currentPlayer;
         if (properties.length) {
             const mortgageEle = document.getElementById('mortgage_area');
             mortgageEle.style.display = 'inline-block';
@@ -166,12 +166,13 @@ export default class GameSettings {
             const mortgageEle = document.getElementById('mortgage_area');
             mortgageEle.style.display = 'none';
         }
-        if (this.mortgages.filter(mortgage => mortgage.id === id).length) {
+        const playerMortgageProps = this.mortgages.filter(mortgage => mortgage.id === id);
+        if (playerMortgageProps.length) {
             const mortgageArea = document.getElementById('bank_area');
             mortgageArea.style.display = 'inline-block';
             const select = document.getElementById('bank_props');
             select.innerHTML = '';
-            this.mortgages.map(property => {
+            playerMortgageProps.map(property => {
                 const option = document.createElement('option');
                 option.innerHTML = property.name;
                 select.appendChild(option);

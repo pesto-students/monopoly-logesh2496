@@ -35,18 +35,21 @@ function startGame() {
         return;
     }
     const noOfPlayers = parseInt(getById('no_of_players').value);
-    for (let i = 1; i <= noOfPlayers; i++) {
+    for (let i = 0; i < noOfPlayers; i++) {
         const id = `dyn_name_${i}`;
-        getById(id).innerHTML = players[i - 1].name;
+        getById(id).innerHTML = players[i].name;
+        getById(`player_${i}_table`).style.display = 'unset';
+        document.querySelector('#position_0').querySelector(`#p${i+1}`).style.visibility = 'visible';
     }
     getById('player_turn').innerHTML = playerOneSettings.name;
+    getById('player_turn').style.color = playerOneSettings.color;
     hideUnwantedElements(true);
     monopolyGame[instanceAttribute] = new GameSettings(players, noOfPlayers);
 }
 function hideUnwantedElements(isGamePage) {
     if (isGamePage) {
         homePage.style.display = 'none';
-        gamePage.style.display = 'unset';
+        gamePage.style.display = 'flex';
     }
 }
 function onSelectNoOfPlayers() {

@@ -46,7 +46,7 @@ export default class Player {
         this.setElementToPosition();
         setTimeout(() => this.performPlayerAction(this, diceValue), 0);
     }
-    performPlayerAction(player, lastDiceValues) {
+    performPlayerAction(player, lastDiceValues = this.parent.currentDiceValue) {
         const currentPosition = this.getPosition();
         const card = this.parent.gameBlocks[currentPosition];
         const isValidPlace = card.price !== '';
@@ -71,14 +71,14 @@ export default class Player {
             } else {
                 switch (card.name) {
                     case 'Community Chest':
-                        handleCommunityCards(lastDiceValues - 1, player);
+                        this.handleCommunityCards(lastDiceValues - 1, player);
                         break;
                     case 'City Tax':
                         player.cash -= 200;
                         alert('Tax amount $200 has been deducted!');
                         break;
                     case 'Chance':
-                        handleChances(lastDiceValues - 1, player);
+                        this.handleChances(lastDiceValues - 1, player);
                         break;
                     case 'Just Visiting':
                         break;
