@@ -173,7 +173,7 @@ tr:nth-child(even) {
 .auction-container,
 .banking-area {
   height: 100px;
-  width: 400px;
+  width: 500px;
   border: 1px solid;
   padding-left: 15px;
   margin-top: 10px;
@@ -187,6 +187,11 @@ tr:nth-child(even) {
 .bank-area {
   display: none;
 }
+.auction-area #increment_amount {
+  width: 20px;
+  font-size: 20px;
+}
 .player-turn {
   margin: 10px 0;
+  font-size: 18px;
 }

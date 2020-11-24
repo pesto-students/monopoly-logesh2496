@@ -45,6 +45,7 @@ export default class GameSettings {
         document.getElementById(payMortgageBtnId).addEventListener('click', this.payMortgageAndGetProperty.bind(this));
 
         document.getElementById('bank_props').addEventListener('click', this.onBankPropertySelect.bind(this));
+        document.getElementById('manage_mortgage').addEventListener('click', this.manageMortgage.bind(this));
     }
     loadAssets() {
         Promise.all([fetch('./data/gameBlocks.json'), fetch('./data/chanceCards.json'), fetch('./data/communityCards.json')]).then((values) => {
@@ -54,6 +55,7 @@ export default class GameSettings {
           });
     }
     rollDice() {
+        this.hideDices();
         const diceOne = getRandomDiceValue();
         const diceTwo = getRandomDiceValue();
         const totalDiceValue = diceOne + diceTwo;
@@ -62,25 +64,29 @@ export default class GameSettings {
         this.currentDiceValue = totalDiceValue;
         this.currentPlayer.setPosition(totalDiceValue);
 
-        this.disableRollDiceBtn();
-        this.enableEndTurnBtn();
+        if(diceOne !== diceTwo) {
+            this.disableRollDiceBtn();
+            this.enableEndTurnBtn();
+        }
     }
     endTurn() {
-        Array.from(document.getElementById(diceOneId).children).map(dice => {
-            dice.style.display = 'none';
-        });
-        Array.from(document.getElementById(diceTwoId).children).map(dice => {
-            dice.style.display = 'none';
-        });
+        this.hideDices();
         this.enableRollDiceBtn();
         this.disableEndTurnBtn();
         this.setNextPlayer();
+        this.unManageMortgage();
     }
     showDices(diceOne, diceTwo) {
         document.getElementById('dice_one').children[diceOne - 1].style.display = 'unset';
         document.getElementById('dice_two').children[diceTwo - 1].style.display = 'unset';
     }
     hideDices() {
+        Array.from(document.getElementById(diceOneId).children).map(dice => {
+            dice.style.display = 'none';
+        });
+        Array.from(document.getElementById(diceTwoId).children).map(dice => {
+            dice.style.display = 'none';
+        });
     }
     enableRollDiceBtn() {
         document.getElementById(rollDiceId).removeAttribute('disabled');
@@ -101,8 +107,8 @@ export default class GameSettings {
             this.playerTurn++;
         }
         this.currentPlayer = this.playersInfo[this.playerTurn];
-        document.getElementById('player_turn').innerHTML = this.playersInfo[this.playerTurn].name;
-        this.updateMortgage();
+        document.getElementById('player_turn').innerHTML = this.currentPlayer.name;
+        document.getElementById('player_turn').style.color = this.currentPlayer.color;
     }
     getNextPlayer() {
         let index;
@@ -311,5 +317,12 @@ export default class GameSettings {
         const cardName = select.value;
         const { payable } = this.mortgages.filter(block => block.name === cardName)[0];
         document.getElementById('bank_amt').innerHTML = '$' + payable;
+    }
+    manageMortgage() {
+        this.updateMortgage();
+    }
+    unManageMortgage() {
+        const mortgageEle = document.getElementById('mortgage_area');
+        mortgageEle.style.display = 'none';
     }
 }
