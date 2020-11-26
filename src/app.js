@@ -1,4 +1,5 @@
 import GameSettings from './gameSettings.js';
+import './style.css';
 
 //Selectors
 const getById = (id) => document.getElementById(id);
