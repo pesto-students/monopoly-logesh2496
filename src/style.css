@@ -104,9 +104,6 @@ body {
 #end_turn {
   margin-top: 10px;
 }
-.dice-area img {
-  display: none;
-}
 .dice-two img {
   margin-left: 12px;
 }

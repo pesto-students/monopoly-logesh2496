@@ -1,5 +1,8 @@
 import Player from './player.js';
-import { getRandomDiceValue } from './utils.js';
+import { getImageById, getRandomDiceValue } from './utils.js';
+import GameBlocks from './data/gameBlocks.json';
+import Chances from './data/chanceCards.json';
+import CommunityCards from './data/communityCards.json';
 
 const rollDiceId = 'roll_dice';
 const endTurnId = 'end_turn';
@@ -48,11 +51,9 @@ export default class GameSettings {
         document.getElementById('manage_mortgage').addEventListener('click', this.manageMortgage.bind(this));
     }
     loadAssets() {
-        Promise.all([fetch('./data/gameBlocks.json'), fetch('./data/chanceCards.json'), fetch('./data/communityCards.json')]).then((values) => {
-            Promise.all(values.map(value => value.json())).then(responses => {
-                [this.gameBlocks, this.chances, this.communityCards] = responses;
-            });
-          });
+        this.gameBlocks = GameBlocks;
+        this.chances = Chances;
+        this.communityCards = CommunityCards;
     }
     rollDice() {
         this.hideDices();
@@ -62,12 +63,14 @@ export default class GameSettings {
 
         this.showDices(diceOne, diceTwo);
         this.currentDiceValue = totalDiceValue;
-        this.currentPlayer.setPosition(totalDiceValue);
+        setTimeout(() => {
+            this.currentPlayer.setPosition(totalDiceValue);
 
-        if(diceOne !== diceTwo) {
-            this.disableRollDiceBtn();
-            this.enableEndTurnBtn();
-        }
+            if(diceOne !== diceTwo) {
+                this.disableRollDiceBtn();
+                this.enableEndTurnBtn();
+            }
+        }, 10);
     }
     endTurn() {
         this.hideDices();
@@ -77,8 +80,14 @@ export default class GameSettings {
         this.unManageMortgage();
     }
     showDices(diceOne, diceTwo) {
-        document.getElementById('dice_one').children[diceOne - 1].style.display = 'unset';
-        document.getElementById('dice_two').children[diceTwo - 1].style.display = 'unset';
+        const diceImageOne = new Image();
+        diceImageOne.src = getImageById(diceOne);
+        diceImageOne.alt = diceOne;
+        document.getElementById('dice_one').appendChild(diceImageOne);
+        const diceImageTwo = new Image();
+        diceImageTwo.src = getImageById(diceTwo);
+        diceImageTwo.alt = diceTwo;
+        document.getElementById('dice_two').appendChild(diceImageTwo);
     }
     hideDices() {
         Array.from(document.getElementById(diceOneId).children).map(dice => {
