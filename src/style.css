@@ -15,15 +15,26 @@ body {
 .home-page * {
   margin: 5px;
 }
+.game-page {
+  display: flex;
+  flex-wrap: wrap;
+}
 .board {
-  width: calc(11 * 65px);
-  height: 400px;
+  position: relative;
+  width: calc(13 * 60px);
+  min-width: calc(13 * 60px);
+  border: 1px solid;
 
   font-size: 12px;
   word-break: break-word;
 }
 .board > div {
   display: flex;
+  justify-content: space-between;
+    flex-wrap: nowrap;
+    padding: 2px;
+    padding-right: 4px;
+    min-width: inherit;
 }
 .place,
 .non-property {
@@ -35,8 +46,8 @@ body {
 .main-row .place,
 .secondary-row .place,
 .main-row .non-property {
-  width: 65px;
-  height: 65px;
+  width: 60px;
+  height: 60px;
   text-align: center;
 }
 
@@ -64,13 +75,12 @@ body {
   width: 8px;
   height: 8px;
   margin-right: 4px;
-  visibility: hidden;
 }
 .go .position .p1,
 .go .position .p2,
 .go .position .p3,
 .go .position .p4 {
-  visibility: visible;
+  visibility: hidden;
 }
 .position {
   display: flex;
@@ -79,18 +89,33 @@ body {
 }
 .game-info {
   position: absolute;
-  left: 20%;
+  /* left: 20%; */
   top: 60%;
+
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .game-info .dice-area {
   display: flex;
   height: 50px;
+}
+#end_turn {
+  margin-top: 10px;
+}
+.dice-area img {
+  display: none;
+}
+.dice-two img {
+  margin-left: 12px;
 }
 .info-area {
   width: 45%;
   float: right;
   display: flex;
   flex-direction: column;
+  margin-left: 30px;
 }
 .players-info-box {
   display: flex;
@@ -105,6 +130,12 @@ body {
   width: 150px;
   max-height: 200px;
   overflow-y: auto;
+}
+#player_0_table, #player_1_table, #player_2_table, #player_3_table {
+  display: none;
+}
+.p1, .p2, .p3, .p4 {
+  visibility: hidden;
 }
 table {
   font-family: arial, sans-serif;
@@ -142,7 +173,7 @@ tr:nth-child(even) {
 .auction-container,
 .banking-area {
   height: 100px;
-  width: 400px;
+  width: 500px;
   border: 1px solid;
   padding-left: 15px;
   margin-top: 10px;
@@ -156,6 +187,11 @@ tr:nth-child(even) {
 .bank-area {
   display: none;
 }
+.auction-area #increment_amount {
+  width: 20px;
+  font-size: 20px;
+}
 .player-turn {
   margin: 10px 0;
+  font-size: 18px;
 }

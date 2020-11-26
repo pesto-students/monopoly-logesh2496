@@ -13,7 +13,7 @@
     <div class="monopoly-game-page" id="monopoly">
         <div class="home-page" id="home_page">
             <div class="select-no-players">
-                Select number of players: <select id='no_of_players' onchange="onSelectNoOfPlayers()">
+                Select number of players: <select id='no_of_players' >
                     <option>2</option>
                     <option>3</option>
                     <option>4</option>
@@ -45,99 +45,33 @@
                         <option selected>Orange</option>
                     </select> </div>
             </div>
-            <button id="start_game" onclick="startGame()">Start Game</button>
+            <button id="start_game">Start Game</button>
         </div>
-        <div class="game_page" id="game_page" style="display: none;">
-            <div class="info-area">
-                <div class="players-info-box">
-                    <div class="p-one-info-box">
-                        <table id="player_0_table">
-                            <tr>
-                                <th><span id="dyn_name_1"></span> - <span id="cash_on_hand">$1500</span></th>
-                            </tr>
-                            <tr>
-                                <td>--</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="p-two-info-box">
-                        <table id="player_1_table">
-                            <tr>
-                                <th><span id="dyn_name_2"></span> - <span id="cash_on_hand">$1500</span></th>
-                            </tr>
-                            <tr>
-                                <td>--</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="p-three-info-box">
-                        <table id="player_2_table">
-                            <tr>
-                                <th><span id="dyn_name_3">three</span> - <span id="cash_on_hand">$1500</span></th>
-                            </tr>
-                            <tr>
-                                <td>--</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="p-four-info-box">
-                        <table id="player_3_table">
-                            <tr>
-                                <th><span id="dyn_name_4">four</span> - <span id="cash_on_hand">$1500</span></th>
-                            </tr>
-                            <tr>
-                                <td>--</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="auction-container">
-                    AUCTION:
-                    <span class="auction-area" id="auction_area">
-                        <span class="">
-                            <select id="property_auction"></select>
-                        </span>
-                        <table id="players_auction">
-
-                        </table>
-                        Bidding Player:<strong id="auction_player"></strong>
-                        Bidding Amount:<strong id="auction_amt">--</strong>
-                        <button id="increment_amount" onclick="increamentAuctionAmt()">+</button>
-                        <button id="bid_off" onclick="bidOff()">Bid off</button>
-                    </span>
-                </div>
-                <div class="banking-area">
-                    Mortgage:
-                    <div class="mortgage-area" id="mortgage_area">
-                        <span class="">
-                            <select id="property_mortgage" onchange="onMortgageSelect()"></select>
-                        </span>
-                        <strong id="mortgage_amt"></strong>
-                        <button onclick="onGetMortgageValue()">Get</button>
-                    </div>
-                    <div class="bank-area" id="bank_area">
-                        Get back:
-                        <span class="">
-                            <select id="bank_props" onchange="onBankPropertySelect()"></select>
-                        </span>
-                        <strong id="bank_amt"></strong>
-                        <button onclick="payMortgageAndGetProperty()">Pay</button>
-                    </div>
-                </div>
-                <!-- <div>
-                    <table>
-                        <tr>
-                            <th>Name</th>
-                            <th>Cash</th>
-                            <th>No of properties</th>
-                            <th>Bought</th>
-                            <th>Sold</th>
-                        </tr>
-                    </table>
-                </div> -->
-            </div>
-
+        <div class="game-page" id="game_page" style="display: none;">
             <div class="board">
+                <div class="game-info">
+                    <div class="dice-area">
+                        <div class="dice-one" id="dice_one">
+                            <img src="./assets/Die_1.png" alt="1">
+                            <img src="./assets/Die_2.png" alt="2">
+                            <img src="./assets/Die_3.png" alt="3">
+                            <img src="./assets/Die_4.png" alt="4">
+                            <img src="./assets/Die_5.png" alt="5">
+                            <img src="./assets/Die_6.png" alt="6">
+                        </div>
+                        <div class="dice-two" id="dice_two">
+                            <img src="./assets/Die_1.png" alt="1">
+                            <img src="./assets/Die_2.png" alt="2">
+                            <img src="./assets/Die_3.png" alt="3">
+                            <img src="./assets/Die_4.png" alt="4">
+                            <img src="./assets/Die_5.png" alt="5">
+                            <img src="./assets/Die_6.png" alt="6">
+                        </div>
+                    </div>
+                    <button id='roll_dice'>Roll</button>
+                    <button id='end_turn' disabled>End turn</button>
+                    <div class="player-turn">Currently Playing: <strong id="player_turn"></strong></div>
+                </div>
                 <div class="main-row">
                     <div class="non-property">Free Parking
                         <div id="position_20" class="position">
@@ -484,33 +418,98 @@
                     </div>
                 </div>
             </div>
-            <div class="game-info">
-                <div class="dice-area">
-                    <div class="dice-one" id="dice_one">
-                        <img src="./assets/Die_1.png" alt="1" style="display: none;">
-                        <img src="./assets/Die_2.png" alt="2" style="display: none;">
-                        <img src="./assets/Die_3.png" alt="3" style="display: none;">
-                        <img src="./assets/Die_4.png" alt="4" style="display: none;">
-                        <img src="./assets/Die_5.png" alt="5" style="display: none;">
-                        <img src="./assets/Die_6.png" alt="6" style="display: none;">
+            <div class="info-area">
+                <div class="players-info-box">
+                    <div class="p-one-info-box">
+                        <table id="player_0_table">
+                            <tr>
+                                <th><span id="dyn_name_0"></span> - <span id="cash_on_hand">$1500</span></th>
+                            </tr>
+                            <tr>
+                                <td>--</td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="dice-two" id="dice_two">
-                        <img src="./assets/Die_1.png" alt="1" style="display: none;">
-                        <img src="./assets/Die_2.png" alt="2" style="display: none;">
-                        <img src="./assets/Die_3.png" alt="3" style="display: none;">
-                        <img src="./assets/Die_4.png" alt="4" style="display: none;">
-                        <img src="./assets/Die_5.png" alt="5" style="display: none;">
-                        <img src="./assets/Die_6.png" alt="6" style="display: none;">
+                    <div class="p-two-info-box">
+                        <table id="player_1_table">
+                            <tr>
+                                <th><span id="dyn_name_1"></span> - <span id="cash_on_hand">$1500</span></th>
+                            </tr>
+                            <tr>
+                                <td>--</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="p-three-info-box">
+                        <table id="player_2_table">
+                            <tr>
+                                <th><span id="dyn_name_2">three</span> - <span id="cash_on_hand">$1500</span></th>
+                            </tr>
+                            <tr>
+                                <td>--</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="p-four-info-box">
+                        <table id="player_3_table">
+                            <tr>
+                                <th><span id="dyn_name_3">four</span> - <span id="cash_on_hand">$1500</span></th>
+                            </tr>
+                            <tr>
+                                <td>--</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
-                <button id='roll_dice' onclick="rollDice()">Roll</button>
-                <button id='end_turn' onclick='endTurn()' disabled>End turn</button>
-                <div class="player-turn">Currently Playing: <strong id="player_turn"></strong></div>
+                <div class="auction-container">
+                    AUCTION:
+                    <span class="auction-area" id="auction_area">
+                        <span class="">
+                            <select id="property_auction"></select>
+                        </span>
+                        <table id="players_auction">
+
+                        </table>
+                        Bidding Player:<strong id="auction_player"></strong>
+                        Bidding Amount:<strong id="auction_amt">--</strong>
+                        <button id="increment_amount">+</button>
+                        <button id="bid_off">Bid off</button>
+                    </span>
+                </div>
+                <div class="banking-area">
+                    Mortgage: <button id="manage_mortgage">Manage</button>
+                    <div class="mortgage-area" id="mortgage_area">
+                        <span class="">
+                            <select id="property_mortgage"></select>
+                        </span>
+                        <strong id="mortgage_amt"></strong>
+                        <button id="get_mortgage">Get</button>
+                    </div>
+                    <div class="bank-area" id="bank_area">
+                        Get back:
+                        <span class="">
+                            <select id="bank_props" ></select>
+                        </span>
+                        <strong id="bank_amt"></strong>
+                        <button id="pay_mortgage">Pay</button>
+                    </div>
+                </div>
+                <!-- <div>
+                    <table>
+                        <tr>
+                            <th>Name</th>
+                            <th>Cash</th>
+                            <th>No of properties</th>
+                            <th>Bought</th>
+                            <th>Sold</th>
+                        </tr>
+                    </table>
+                </div> -->
             </div>
         </div>
         <div class="modal" id="modal"></div>
     </div>
-    <script src="./app.js"></script>
+    <script type="module" src="./app.js"></script>
 </body>
 
 </html>
