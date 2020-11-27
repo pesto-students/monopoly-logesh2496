@@ -70,7 +70,7 @@ export default class GameSettings {
                 this.disableRollDiceBtn();
                 this.enableEndTurnBtn();
             }
-        }, 10);
+        }, 100);
     }
     endTurn() {
         this.hideDices();
