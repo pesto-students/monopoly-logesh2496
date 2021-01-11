@@ -14,33 +14,3 @@ The game is played until only one remaining player has money and property, with 
 4. Functionality should be the main priority. Game should work as per rules mentioned in rulebook. keep the UI minimal.
 
 For game rules, Please see [Monopoly rulebook](https://www.hasbro.com/common/documents/A0AFE3A69EC745EBA77B9A7950BBCA44/AD7742057B1D43609B53D24D75E9CA9B.pdf)
-
-# Gameboard UI
-
-![](assets/game-board.jpg)
-
-## Additional Requirement
-
-- Write Test cases for your components.
-- Make it online multiplayer game with the help of Websockets
-
-## Tips
-
-- Deploy your application in very early stage and then do continous development.
-- Test your application in Google Chrome, Mozilla firefox and Internet explorer 11.
-- If you plan to create this project with React, use Create React App for boilerplate code.
-
-## Allowed Tech stack
-
-- HTML, CSS, JavaScript
-- Bootstrap
-- ReactJS
-- SCSS
-- DOM Testing Library
-- Jest and React Testing Library
-
-**NOTE: React Component libraries like Material UI, Antd, Chakra UI are not allowed**
-
-## Reference Link
-
-https://www.intrepidcoder.com/projects/monopoly/

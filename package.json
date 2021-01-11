@@ -2,5 +2,22 @@
   "name": "monopoly",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "start": "webpack serve --open Chrome.exe"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/preset-env": "^7.12.7",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.2.1",
+    "babel-preset-env": "^1.7.0",
+    "css-loader": "^5.0.1",
+    "html-webpack-plugin": "^4.5.0",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.7.0",
+    "webpack-cli": "^4.2.0",
+    "webpack-dev-server": "^3.11.0"
+  }
 }

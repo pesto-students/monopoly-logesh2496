@@ -1,0 +1,194 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: Roboto;
+  font-weight: 300;
+  font-size: 16px;
+}
+#player_three_settings,
+#player_four_settings {
+  display: none;
+}
+.home-page * {
+  margin: 5px;
+}
+.game-page {
+  display: flex;
+  flex-wrap: wrap;
+}
+.board {
+  position: relative;
+  width: calc(13 * 60px);
+  min-width: calc(13 * 60px);
+  border: 1px solid;
+
+  font-size: 12px;
+  word-break: break-word;
+}
+.board > div {
+  display: flex;
+  justify-content: space-between;
+    flex-wrap: nowrap;
+    padding: 2px;
+    padding-right: 4px;
+    min-width: inherit;
+}
+.place,
+.non-property {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.main-row .place,
+.secondary-row .place,
+.main-row .non-property {
+  width: 60px;
+  height: 60px;
+  text-align: center;
+}
+
+.secondary-row {
+  justify-content: space-between;
+  /* min-width: 200px;
+  height: 100px; */
+}
+.p1 {
+  background: red;
+}
+.p2 {
+  background: blue;
+}
+.p3 {
+  background: green;
+}
+.p4 {
+  background: orange;
+}
+.position .p1,
+.position .p2,
+.position .p3,
+.position .p4 {
+  width: 8px;
+  height: 8px;
+  margin-right: 4px;
+}
+.go .position .p1,
+.go .position .p2,
+.go .position .p3,
+.go .position .p4 {
+  visibility: hidden;
+}
+.position {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+.game-info {
+  position: absolute;
+  /* left: 20%; */
+  top: 60%;
+
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.game-info .dice-area {
+  display: flex;
+  height: 50px;
+}
+#end_turn {
+  margin-top: 10px;
+}
+.dice-two img {
+  margin-left: 12px;
+}
+.info-area {
+  width: 45%;
+  float: right;
+  display: flex;
+  flex-direction: column;
+  margin-left: 30px;
+}
+.players-info-box {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  height: 200px;
+}
+.p-one-info-box,
+.p-two-info-box,
+.p-three-info-box,
+.p-four-info-box {
+  width: 150px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+#player_0_table, #player_1_table, #player_2_table, #player_3_table {
+  display: none;
+}
+.p1, .p2, .p3, .p4 {
+  visibility: hidden;
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td,
+th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+td {
+  font-size: 16px;
+}
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+#cash_on_hand {
+  font-size: 13px;
+}
+.p-one-info-box th {
+  color: red;
+}
+.p-two-info-box th {
+  color: blue;
+}
+.p-three-info-box th {
+  color: green;
+}
+.p-four-info-box th {
+  color: orange;
+}
+.auction-container,
+.banking-area {
+  height: 100px;
+  width: 500px;
+  border: 1px solid;
+  padding-left: 15px;
+  margin-top: 10px;
+}
+.auction-area *,
+.banking-area * {
+  margin: 5px;
+}
+.auction-area,
+.mortgage-area,
+.bank-area {
+  display: none;
+}
+.auction-area #increment_amount {
+  width: 20px;
+  font-size: 20px;
+}
+.player-turn {
+  margin: 10px 0;
+  font-size: 18px;
+}
